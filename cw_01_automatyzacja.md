@@ -11,4 +11,6 @@ sskqoskqsqsqskosq
 
 sqssq
 
-[!TIP] To jest tip
+[!TIP] 
+
+To jest tip
