@@ -1,0 +1,1 @@
+# Integracja narzędzi SAGA i GRASS w sykryptach geoprzetwarzania

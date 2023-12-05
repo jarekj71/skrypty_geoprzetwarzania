@@ -1,0 +1,1 @@
+# Budowanie okien dialogowych i inerakcja z użytkownikiem
