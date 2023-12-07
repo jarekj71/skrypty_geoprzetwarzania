@@ -29,34 +29,35 @@ Przejdź od studium przypadku do modelu ogólnego przeznaczenia
 
 #### Studium przypadku
 
-Wybrać obszar pod zabudowę mieszkalną według następujących krytieriów:
-       * obszar w granicach miasta Poznania
-       * położony na obszarach roliniczych i nieużytkach (Code
-       * do 200 metrów od obszarów zabudowanych
-       * powyżej 250 metrów od obszarów kolejowych
-       * minimalna wielkość poligonu 10 ha
+Wykonać działania:
+>  Wybrać obszar pod zabudowę mieszkalną według następujących krytieriów:
+* obszar w granicach miasta Poznania
+* położony na obszarach roliniczych i nieużytkach (Code
+* do 200 metrów od obszarów zabudowanych
+* powyżej 250 metrów od obszarów kolejowych
+* minimalna wielkość poligonu 10 ha
       
 Narzędzia i sekwencja działań:
-Clip - przycięcie UA do granicy Poznania
-Extract by expression (operator IN) - wydzielenie obszarów rolnych, zabudowy i kolejowych
-Bufer (dissolve) obszarów zabudowy i kolejowych
-Intersection - obszary rolne i zabudowa 200 metrów -> wIntersection
-Defference - wynik 1 - bufor obszarów kolejowych -> wDifference
-Mulitpart to single part wDifference -> single
-Extract by expression - single ($area/10000) 10
+* Clip - przycięcie UA do granicy Poznania
+* Extract by expression (operator IN) - wydzielenie obszarów rolnych, zabudowy i kolejowych
+* Bufer (dissolve) obszarów zabudowy i kolejowych
+* Intersection - obszary rolne i zabudowa 200 metrów -> wIntersection
+* Defference - wynik 1 - bufor obszarów kolejowych -> wDifference
+* Mulitpart to single part wDifference -> single
+* Extract by expression - single ($area/10000) 10
 
-#### Wskazać w studium przypadku elementy które można modyfikować (wartości liczbowe)
-
-#### Dodać możliwość wymiany warstw (dane + maska obszaru działania)
-
-#### Wskazać możliwość wyboru wartości atrybutów (wyrażenia) podelegających operacjom
+2. Zbudować model dokumentujący zadania (z prowadzącym)
+3. Wskazać w modelu elementy które można modyfikować (wartości liczbowe)
+4. Dodać możliwość wymiany warstw (dane + maska obszaru działania)
+5. Wskazać możliwość wyboru wartości atrybutów (wyrażenia) w warstwie danych podlegających geoprzetwarzaniu
 
 #### Wersja uogólniona:
-Pozwoli wskazać:
-        * obszary podlegające selekcji
-        * kryterium bliskości (obszary nie dalej niż wartość od)
-        * kryterium odległości (obszary nie bliżej niż wartość od)
-        * kryterium powierzchni (obszary nie mniejsze niż wartość)
+
+> Pozwoli wskazać:
+* obszary podlegające selekcji
+* kryterium bliskości (obszary nie dalej niż wartość od)
+* kryterium odległości (obszary nie bliżej niż wartość od)
+* kryterium powierzchni (obszary nie mniejsze niż wartość)
 
 
 
