@@ -12,7 +12,9 @@ Celem ćwiczeń jest opanowanie podstaw automatyzacji geoprzetwarzania przy pomo
 ### Zadanie:
 Użyć zbioru danych punktowych do wycięcia fragmentów rastra i zapisanie ich jako zbiór obrazów .png
 
-Proces wymaga następujących kroków. Trzy pierwsze kroki można wykonać przy pomocy prostego modelera, który jako parametr przyjmie wielkość bufora.
+> Proces wymaga następujących kroków. 
+
+* Trzy pierwsze kroki można wykonać przy pomocy prostego modelera, który jako parametr przyjmie wielkość bufora.
 
 * Zbudowania zbioru punktów dowolną metodą
 * Zbudowanie bufora dookoła punktów
@@ -46,10 +48,10 @@ Narzędzia i sekwencja działań:
 * Mulitpart to single part wDifference -> single
 * Extract by expression - single ($area/10000) 10
 
-2. Zbudować model dokumentujący zadania (z prowadzącym)
-3. Wskazać w modelu elementy które można modyfikować (wartości liczbowe)
-4. Dodać możliwość wymiany warstw (dane + maska obszaru działania)
-5. Wskazać możliwość wyboru wartości atrybutów (wyrażenia) w warstwie danych podlegających geoprzetwarzaniu
+1. Zbudować model dokumentujący zadania (z prowadzącym)
+2. Wskazać w modelu elementy które można modyfikować (wartości liczbowe)
+3. Dodać możliwość wymiany warstw (dane + maska obszaru działania)
+4. Wskazać możliwość wyboru wartości atrybutów (wyrażenia) w warstwie danych podlegających geoprzetwarzaniu
 
 #### Wersja uogólniona:
 
