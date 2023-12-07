@@ -1,4 +1,4 @@
-# Automatyzacja procesu geoprzetwarzania w środowisku QGIS i OSG4W
+# Automatyzacja procesu geoprzetwarzania w środowisku QGIS
 
 Celem ćwiczeń jest opanowanie podstaw automatyzacji geoprzetwarzania przy pomocy narzędzi programu QGIS wspomagająccyh automatyzację. Narzędzia te są mocno niedoskonałe i mogą być używane jedynie do niektórych czynności. 
 
@@ -56,10 +56,9 @@ Pozwoli wskazać:
         * obszary podlegające selekcji
         * kryterium bliskości (obszary nie dalej niż wartość od)
         * kryterium odległości (obszary nie bliżej niż wartość od)
-        * kryterium powierzchni (obszary nie mniejsze niż
+        * kryterium powierzchni (obszary nie mniejsze niż wartość)
 
 
-## Przetwarzanie wsadowe
 
 
 
