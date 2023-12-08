@@ -2,7 +2,11 @@
 
 Celem ćwiczeń jest opanowanie podstaw automatyzacji geoprzetwarzania przy pomocy narzędzi programu QGIS wspomagająccyh automatyzację. Narzędzia te są mocno niedoskonałe i mogą być używane jedynie do niektórych czynności. 
 
-Źródło danych: [https://uam-my.sharepoint.com/:u:/g/personal/jarekj_amu_edu_pl/EYUTROqLUtxMrXyakqTOHW8BoqLVLEq1rja3pnUz1kF8Ig?e=fsudQm]
+Źródło danych: 
+
+Urban Atlas: [https://uam-my.sharepoint.com/:u:/g/personal/jarekj_amu_edu_pl/EYUTROqLUtxMrXyakqTOHW8BoqLVLEq1rja3pnUz1kF8Ig?e=fsudQm]
+
+Raster: [https://uam-my.sharepoint.com/:i:/g/personal/jarekj_amu_edu_pl/ESbxLrd5NFJMlVPNEDS_I0MBHzxNxUmzRPPgu46LNInzdw?e=eEOdPf]
 
 ### Zakres zajęć:
 * metody automatyzacji geoprzetwarzania
