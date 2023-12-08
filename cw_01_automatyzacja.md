@@ -15,7 +15,6 @@ Użyć zbioru danych punktowych do wycięcia fragmentów rastra i zapisanie ich 
 > Proces wymaga następujących kroków. 
 
 * Trzy pierwsze kroki można wykonać przy pomocy prostego modelera, który jako parametr przyjmie wielkość bufora.
-
 * Zbudowania zbioru punktów dowolną metodą
 * Zbudowanie bufora dookoła punktów
 * Zbudowania bounding box dla każdego bufora
@@ -34,9 +33,9 @@ Przejdź od studium przypadku do modelu ogólnego przeznaczenia
 Wykonać działania:
 >  Wybrać obszar pod zabudowę mieszkalną według następujących krytieriów:
 * obszar w granicach miasta Poznania
-* położony na obszarach roliniczych i nieużytkach (Code
-* do 200 metrów od obszarów zabudowanych
-* powyżej 250 metrów od obszarów kolejowych
+* położony na obszarach roliniczych i nieużytkach (21000, 22000, 23000, 24000, 13400)
+* do 200 metrów od obszarów zabudowanych (11100, 11210, 11220, 11230, 11240)
+* powyżej 250 metrów od obszarów kolejowych (12230)
 * minimalna wielkość poligonu 10 ha
       
 Narzędzia i sekwencja działań:
