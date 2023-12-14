@@ -1,5 +1,20 @@
-# Wykorzystanie instrukcji sterujących w procesie automatyzacji geoprzetwarzania
+# Przetwarzanie wsadowe
 
+
+
+## Zadanie:
+Użyć zbioru danych punktowych do wycięcia fragmentów rastra i zapisanie ich jako zbiór obrazów .png
+
+> Proces wymaga następujących kroków. 
+
+* Trzy pierwsze kroki można wykonać przy pomocy prostego modelera, który jako parametr przyjmie wielkość bufora.
+* Zbudowania zbioru punktów dowolną metodą
+* Zbudowanie bufora dookoła punktów
+* Zbudowania bounding box dla każdego bufora
+
+Następnie w trybie przetwarzania pojedynczych obiektów, wykonać maskowanie rastra na podstawie bounding box. 
+
+Następnie zapisać otrzymane warstwy do plików .png w trybie przetwarzania wsadowego.
 
 
 ### Zadanie:

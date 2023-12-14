@@ -1,1 +1,1 @@
-# Georzetwarzanie przy pomocy narzędzi GDAL-OGR
+# Przetwarzanie dużych zbiorów danych

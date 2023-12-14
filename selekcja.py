@@ -1,21 +1,3 @@
-# Skrypty sekwencyjne
-
-W ramach zajęć zostanie omówiony skrypt geoprzetwarzania napisane w języku Python, który pozwoli rozszerzyć zakres zadań wykonanych w poprzednim ćwiczeniu
-
-### Zakres zajęć: 
-
-* środowisko pisania skryptów
-* Działanie funkcji `processing.run()`
-* posługiwanie się panelem geoprzetwarzania do generowania poleceń skrytpu
-* Integracja poleceń jako skryptu
-
-
-
-### Zadanie:
-
-Ćwiczenie powtórzyć poprzez zapisanie wcześniej wykonanego modelu jako skrypt języka Python. Oczyścić polecenia Pythona ze zbędnych elementów.
-
-```Python
 # GPKG - plik zawiera kilka warstw. 
 
 #parametry przekazywane do skryptu. Mogą być dowolnie zmieniane
@@ -96,13 +78,3 @@ params =  {'INPUT':single['OUTPUT'],
 
 result = processing.run("native:extractbyexpression",params)
 QgsProject.instance().addMapLayer(result['OUTPUT'])
-
-```
-
-
-### Zadanie:
-Rozszerzyć skrypt o kryterium odległości względem lotniska - działki nie mogą być bliżej niż 1 km do lotniska
-
-### Zadanie:
-Zmodyfikować skrypt tak, aby poszczególne narzędzia geoprocessingu opakować w funkcje, a parametry przekazywać jako argumenty funkcji
-

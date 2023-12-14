@@ -11,21 +11,7 @@ Raster: [https://uam-my.sharepoint.com/:i:/g/personal/jarekj_amu_edu_pl/ESbxLrd5
 ### Zakres zajęć:
 * metody automatyzacji geoprzetwarzania
 
-## Przetwarzanie wsadowe
 
-### Zadanie:
-Użyć zbioru danych punktowych do wycięcia fragmentów rastra i zapisanie ich jako zbiór obrazów .png
-
-> Proces wymaga następujących kroków. 
-
-* Trzy pierwsze kroki można wykonać przy pomocy prostego modelera, który jako parametr przyjmie wielkość bufora.
-* Zbudowania zbioru punktów dowolną metodą
-* Zbudowanie bufora dookoła punktów
-* Zbudowania bounding box dla każdego bufora
-
-Następnie w trybie przetwarzania pojedynczych obiektów, wykonać maskowanie rastra na podstawie bounding box. 
-
-Następnie zapisać otrzymane warstwy do plików .png w trybie przetwarzania wsadowego.
 
 ## Modeler
 
@@ -37,9 +23,9 @@ Przejdź od studium przypadku do modelu ogólnego przeznaczenia
 Wykonać działania:
 >  Wybrać obszar pod zabudowę mieszkalną według następujących krytieriów:
 * obszar w granicach miasta Poznania
-* położony na obszarach roliniczych i nieużytkach (21000, 22000, 23000, 24000, 13400)
-* do 200 metrów od obszarów zabudowanych (11100, 11210, 11220, 11230, 11240)
-* powyżej 250 metrów od obszarów kolejowych (12230)
+* położony na obszarach roliniczych i nieużytkach "code_2018" IN (21000, 22000, 23000, 24000, 13400)
+* do 200 metrów od obszarów zabudowanych "code_2018" IN (11100, 11210, 11220, 11230, 11240)
+* powyżej 250 metrów od obszarów kolejowych "code_2018" IN (12230)
 * minimalna wielkość poligonu 10 ha
       
 Narzędzia i sekwencja działań:
@@ -56,13 +42,18 @@ Narzędzia i sekwencja działań:
 3. Dodać możliwość wymiany warstw (dane + maska obszaru działania)
 4. Wskazać możliwość wyboru wartości atrybutów (wyrażenia) w warstwie danych podlegających geoprzetwarzaniu
 
-#### Wersja uogólniona:
+#### [Zapis studium przypadku w postaci modelu](zadania/selekcjaI.model3)
 
-> Pozwoli wskazać:
-* obszary podlegające selekcji
-* kryterium bliskości (obszary nie dalej niż wartość od)
-* kryterium odległości (obszary nie bliżej niż wartość od)
-* kryterium powierzchni (obszary nie mniejsze niż wartość)
+#### [Możliwość modyfikowania modelu Dodanie parametrów ilościowych](zadania/selekcjaII.model3)
+
+
+#### [Możliwość modyfikowania kategorii pól](zadania/selekcjaIII.model3)
+
+> Wersja uogólniona umożliwia:
+* wskazać obszary podlegające selekcji
+* podać kryterium bliskości (obszary nie dalej niż wartość od)
+* podać kryterium odległości (obszary nie bliżej niż wartość od)
+* podać kryterium powierzchni (obszary nie mniejsze niż wartość)
 
 
 
