@@ -19,7 +19,9 @@ W ramach zajęć zostanie omówiony skrypt geoprzetwarzania napisane w języku P
 # GPKG - plik zawiera kilka warstw. 
 
 #parametry przekazywane do skryptu. Mogą być dowolnie zmieniane
-source_file = '/home/jarekj/BACKUP/geodata/Poznan/dane_skrypty_przetwarzania/POLSKA/urban_atlas_espg3035/poznan_ua2018/Data/PL005L2_POZNAN_UA2018_v013.gpkg'
+file = 'PL005L2_POZNAN_UA2018_v013.gpkg'
+source_file = os.path.join(os.path.expanduser("~"),'Documents',file)
+source_file ='/home/jarekj/BACKUP/geodata/Poznan/dane_skrypty_przetwarzania/POLSKA/urban_atlas_espg3035/poznan_ua2018/Data/PL005L2_POZNAN_UA2018_v013.gpkg'
 data_layer = 'PL005L2_POZNAN_UA2018'
 mask_layer = 'PL005L2_POZNAN_UA2018_UrbanCore'
 
