@@ -224,7 +224,7 @@ Jeżeli skrypt działa prawidłowo, warto wszystkie modyfikowane przez użytkown
 
 Na koniec warto jeszcze raz przetestować cały skrypt uruchamiając go w całości poleceniem **Run...** z belki narzędziowej.
 
-Pełna wersja skryptu znajduje się [tutaj]()
+Pełna wersja skryptu znajduje się [tutaj](zadania/cw_2_selekcja.py)
 
 
 ## Zadanie:
