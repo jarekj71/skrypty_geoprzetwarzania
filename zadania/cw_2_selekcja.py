@@ -57,13 +57,13 @@ detached_buffer = processing.run("native:buffer",params)
 #overlays
 
 params = {'INPUT':selected_areas['OUTPUT'],
-'OVERLAY':attached_areas['OUTPUT'],
+'OVERLAY':attached_buffer['OUTPUT'],
 'OUTPUT':'TEMPORARY_OUTPUT'}
 
 interesection = processing.run("native:intersection",params)
 
 params['INPUT'] = intersection['OUTPUT']
-params['OVERLAY'] = detached_areas['OUTPUT']
+params['OVERLAY'] = detached_buffer['OUTPUT']
 
 difference = processing.run("native:difference",params)
 
