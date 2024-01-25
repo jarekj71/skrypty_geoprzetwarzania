@@ -1,7 +1,7 @@
-# Instrukcje sterujące w skrypty geoprzetwarzania i przetwarzanie wsadowe.
+# Instrukcje sterujące w skryptach geoprzetwarzania i przetwarzanie wsadowe.
 
 ## Wiedza i umiejętności:
-W ramach zajęć zostaną rozszerzone umiejętności pisania skryptów geoprzetwarzania o zastosowanie instrukcji sterujących (pętli i rozgałęzień) oraz posługiwania się poleceniami API środowiska QGIS odwołującymi się do interface i zawartości projektu. Integralną częścią projektu jest zapoznanie się z wbudowanymi w system procedurami wsadowego przetrzania algorytmów QGIS jako alternatywnym sposobem automatyzacji zadań.
+W ramach zajęć zostaną rozszerzone umiejętności pisania skryptów geoprzetwarzania o zastosowanie instrukcji sterujących (pętli i rozgałęzień) oraz posługiwania się poleceniami API środowiska QGIS odwołującymi się do interface i zawartości projektu. Integralną częścią ćwiczenia jest zapoznanie się z wbudowanymi w system procedurami wsadowego przetwrzania algorytmów QGIS jako alternatywnym sposobem automatyzacji zadań.
 
 ## Zakres zajęć:
 * wsadowe przetwarzanie algorytmów

@@ -1,1 +1,0 @@
-# Przetwarzanie dużych zbiorów danych

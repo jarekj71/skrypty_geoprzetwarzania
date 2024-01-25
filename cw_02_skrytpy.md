@@ -128,7 +128,17 @@ clipped = processing.run("native:clip", params)
 
 #### Podgląd warstwy geoprzestrzennej
 
-Warstwa tymczasowa nie jest dostępna do obserwacji, gdyż nie została dodana do obszaru projektu. Aby zobaczyć warstwę, należy zastosować metodę `.addMapLayer` obiektu `QgsProject`, który, jak sama nazwa wskazuje przechowuje elementy projektu QGIS. Sama zmienne `clipped` przechowuje słownik, którego jednym z elementów (w tym wypadku jedynym) jest ['OUTPUT'], przechowujący warstwę danych. Tę warstwę możemy wyświetlić lub dodać do projektu. Obiekt `QgsProject` nie jest częścią API processing, ale głównego API systemu QGIS.
+Warstwa tymczasowa nie jest dostępna do obserwacji, gdyż nie została dodana do obszaru projektu. Aby zobaczyć warstwę, należy użyć alternatywnego polecenia `processing.RunAndLoadResults`. Takie polecenie jednak będzie zawsze ładowało dane jako wynik geoprzetwarzania.
+
+```python
+params = {'INPUT':data,
+'OVERLAY':mask,
+'OUTPUT':'TEMPORARY_OUTPUT'}
+
+clipped = processing.runAndLoadResults("native:clip", params)
+```
+
+Jeżeli chcemy załadować warstwę już utworzoną, alternatywną opcją jest użycie metody `.addMapLayer` obiektu `QgsProject` który, jak sama nazwa wskazuje przechowuje elementy projektu QGIS. Sama zmienne `clipped` przechowuje słownik, którego jednym z elementów (w tym wypadku jedynym) jest ['OUTPUT'], przechowujący warstwę danych. Tę warstwę możemy wyświetlić lub dodać do projektu. Obiekt `QgsProject` nie jest częścią API processing, ale głównego API systemu QGIS.
 
 ```python
 QgsProject.instance().addMapLayer(clipped['OUTPUT'])

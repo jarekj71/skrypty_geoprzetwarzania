@@ -49,7 +49,7 @@ Dodatkowo, do rozwiązania zadania samodzielnego narzędzie:
 > **UWAGA** jest to studium przypadku, które pozwoli zorientować się jakie kroki muszą być wykonane. Sama procedura nie jest częścią ćwiczenia. Kursywą nazwy robocze warstw wynikowych w kolejnych krokach
 
 1. Przyciąć `clip` warstwę *poznan_UA* przy pomocy maski *poznan_urbancore*. Działanie w celu usunięcia obszarów nie będących częścią analizy -> *clip*
-2. Wybrać `extractbyexpression` z wyniku poprzedniej operacji (*clip*) obszary spełniające kryteria obszarów rolnych i nieużytków: `"code_2018" IN (11100, 11210, 11220, 11230, 11240)` -> *expressionS*
+2. Wybrać `extractbyexpression` z wyniku poprzedniej operacji (*clip*) obszary spełniające kryteria obszarów rolnych i nieużytków: `"code_2018" IN (21000, 22000, 23000, 24000, 13400)` -> *expressionS*
 3. Wybrać `extractbyexpression`z wyniku poprzedniej operacji (*clip*) obszary spełniające kryteria obszarów zabudowanych: `"code_2018" IN (11100, 11210, 11220, 11230, 11240)` -> *expressionA*
 4. Wybrać `extractbyexpression` z wyniku poprzedniej operacji (*clip*) obszary spełniające kryteria terenów kolejowych: `"code_2018" IN (12230)` -> *expressionD*
 5. Zbudować bufor `buffer` 200 metrów dookoła obszarów zabudowanych *expressionA* z użyciem parametru `dissolve` -> *bufferA* 

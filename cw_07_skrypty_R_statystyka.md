@@ -1,1 +1,0 @@
-# Integracja skryptów języka R w geoprzetwarzaniu środowiska QGIS
