@@ -24,3 +24,7 @@ for rast in lista:
 
 stats = {'index':rasts,'means':means,'stddevs':stddevs,'mins':mins,'maxes':maxes}
 pd.DataFrame(stats).to_csv(os.path.join("..","stats.csv"))
+
+
+r = QgsRasterLayer(lista[0])
+stats = r.dataProvider().bandStatistics(1)
