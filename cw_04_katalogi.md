@@ -21,10 +21,10 @@ Wspólnym celem wszystkich ćwiczeń jest zastosowanie zestawu operacji do sekwe
 * zdefiniowanie nazwy wyjściowej na podstawie nazwy wejściowej
 
 ### Ćwiczenie 1
-Zbudować skrypt, który dokona konwersji zbioru danych wektorowych do formatu rastrowego. Skrypt powinien przkształcać wyłącznie warstwy zawierające poligony o powierzchni nie mniejszej niż 1km<sup>2</sup>. Dodatkowo, skrypt powienien rozszerzyć zasięg pliku rastrowego.
+Zbudować skrypt, który dokona konwersji zbioru danych wektorowych do formatu rastrowego. Elementem skryptu jest filtrowanie na podstawie cech geoprzestrzennych i usuwanie danych nie spełniających wymogu. Skrypt powinien przkształcać wyłącznie warstwy zawierające poligony o powierzchni nie mniejszej niż 1km<sup>2</sup>. Dodatkowo, skrypt powienien rozszerzyć zasięg pliku rastrowego.
 
 ### Ćwiczenie 2
-Zbudować skrypt, który wyliczy nachylenie stoków z katalogu plików rastrowych. Skrypt powinien pomijać pliki, które zawierają dane kategoryzowane (Byte) oraz w przypadku wykrycia układu bez projekcji  geodezyjnej (geograficznego), np. wgs84 dokonać jego automatycznej konwersji do wybranego układu.
+Zbudować skrypt, który wyliczy nachylenie stoków z katalogu plików rastrowych. Elementem sktyptu jest alternatywna scieżka realizacji w przypadku wykrycia problemów. Skrypt powinien pomijać pliki, które zawierają dane kategoryzowane (Byte) oraz w przypadku wykrycia układu bez projekcji  geodezyjnej (geograficznego), np. wgs84 dokonać jego automatycznej konwersji do wybranego układu.
 
 ### Ćwiczenie 3
 Zbudować skrypt, który pobierze podstawowe infromacje statystyczne na temat modeli wysokościowych z katalogu użytego w poprzednim ćwiczeniu u zapisze je w postaci tabeli. Dodatkowo skrypt powinien pominąć pliki zapisane w układzie geograficznym i zawierające dane kategoryzowane.
@@ -39,7 +39,8 @@ Do zrealizowania zadania będą potrzebne następujące narzędzia i algorytmy:
 * biblioteka `core` Qgis, metody klas `QgsRasterLayer`, `QgsVectorLayer` i klasy nadrządnej `QgsMapLayer`. Dodatkowo, wykorzystane zostaną wybrane metody klasy `QgsRasterDataProvider` i `QgsRasterBandStats`
 * `gdal:rasterize` do przekształcenia danych wektorowych w rastrowe
 * `gdal:warpproject` do zamiany projekcji z jednego układu do drugiego
-* `slope` do wyliczenia nachylenia stoków
+* `native:slope` do wyliczenia nachylenia stoków
+* biblioteka `pandas`, w celu exportu pliku tekstowego
 
 ### Wybrane metody klasy `QgsMapLayer`, wspólne dla obu typu danych.
 
@@ -98,7 +99,7 @@ import os
 folder= "vector_folder"
 buf = 1000
 res=50
-minarea = 100
+min_area = 100
 ```
 
 ### Obszar roboczy
@@ -111,7 +112,7 @@ os.chdir(path)
 lista = os.listdir(".")
 lista = [l for l in lista if l.endswith("gpkg")]
 ```
-### Podstawowe informacje
+### Kryteria filtrowania
 Aby można było pozyskać jakiekolwiek informacje na temat pliku geoprzestrzennego, musi on zostać wczytany jako obiekt geoprzestrzenny. Służy do tego klasa `QgsVectorLayer(vect)`, gdzie atrybutem (vect) jest scieżka dostępu do pliku.  Ponieważ aktywny jest nasz katalog roboczy zawarty w zmiennej *path* nazwa pliku jest jednocześnie ścieżką dostępu. 
 Podstawą filtrowania na podstawie własności jest: 
 * informacja na temat typu geometrii pliku, co możemy metodą:  `vector.geometryType()` 
@@ -165,14 +166,188 @@ vect_params['OUTPUT'] = vect[:-4]+"tif"
 
 ### Pętla główna
 Pętla główna przechodzi przez wszystkie pliki *gpkg*,  
-* wczytuje je jako warstwę wektorową
-* sprawdza typ geometrii, jeżeli poligon:
-* sprawdza powierzchnię poligonu, jeżeli większa niż 100:
-* wylicza nowy extent
-* Przypisuje parametry INPUT, EXTENT i OUTPUT.
-* Uruchamiamy algorytm `gdal:rasterize` z aktualnymi parametrami.
+1. wczytuje je jako warstwę wektorową
+2. sprawdza typ geometrii, jeżeli poligon:
+3. sprawdza powierzchnię poligonu, jeżeli większa niż 100:
+4. wylicza nowy extent
+5. Przypisuje parametry INPUT, EXTENT i OUTPUT.
+6. Uruchamiamy algorytm `gdal:rasterize` z aktualnymi parametrami.
 
 Pętla wykonuje się tylko dla 7 z 9 plików. Pomijana jest linia oraz plik, gdzie poligon ma mniej niż 100km<sup>2</sup>
 
-## Ćwiczenie 2 Wyliczenie nachylenia stoków dla wybranych plików
+Kod głównej pętli skryptu:
 
+```Python
+for vect in lista:
+    vector = QgsVectorLayer(vect) #1
+    if vector.geometryType() == type: #2 tylko poligony
+        area = vector.getFeature(1).geometry().area()/1000000 # km2
+        if area > min_area: #3 tylko duże
+            e = vector.extent() #4
+            extent ="{},{},{},{}".format(
+                e.xMinimum()-buf,
+                e.xMaximum()+buf,
+                e.yMinimum()-buf,
+                e.yMaximum()+buf)
+            vect_params['INPUT'] = vect #5
+            vect_params['EXTENT'] = extent
+            vect_params['OUTPUT'] = vect[:-4]+"tif" # usunięcie rozszerzenia i kropki
+            processing.run("gdal:rasterize",vect_params) #6
+```
+
+## Ćwiczenie 2 Wyliczenie nachylenia stoków dla wybranych plików
+Katalog *raster_folder* zawiera 10 plików: 8 z cyfrowym modelem wysokości, 1 z kategoryzowaną mapą geologiczną i 1 z cyfrowym modelem wysokości ale w układzie WGS84. Zadaniem skryptu jest przetworzyć modele wysokościowe do map stoków. W przypadku modelu WGS84 należy wcześniej dokonać reprojekcji do układu '92.
+
+### Parametry: katalog docelowy
+Plik zawiera tylko dwa parametry: katalog z danymi i katalog docelowy. Katalog docelowy musi być utworzony, jeżeli nie istnieje. Pozostałe kroki nie różnią się od poprzedniego zadania, poza tym, że kryterium filtrowania jest rozszerzenie *tif*.
+
+```Python
+import os
+
+folder= "raster_folder"
+destination = "slopes"
+path = os.path.join(os.path.expanduser("~"),"Documents","skrypty_geoprzetwarzania",folder)
+os.chdir(path)
+
+lista = os.listdir(".")
+lista = [l for l in lista if l.endswith("tif")]
+
+if not os.path.exists(destination):
+    os.mkdir(destiantion)
+```
+
+### Kryteria filtrownia
+Podobnie jak w przypadku warstwy wektorowej, podstawą uzyskania informacji przestrzennej jest wczytanie jej jako warstwy rastrowej, służy do tego klasa `QgsRasterLayer()`. Zastosowane zostaną dwa kryteria filtrowania: typ danych oraz projekcja.
+
+* Typ danych. Celem filtra jest oddzielenie danych zawierających kategorie (type Byte) od danych zawierających wartości. Informacja na temat typu danych jest pozyskiwana dla każdego pasma (*band*). Numeracja pasm zaczyna się od 1. Informacja o typie danych nie jest metodą `QgsRasterLayer` ale klasy `QgsRasterDataProvider`, którą pozyskujemy metodą `.dataProvider()` dla warstwy rastrowej.
+
+  > dataProvider to struktura danych odpowiedzialna za obsługę źródła danych. W przypadku danych rastrowych jest to biblioteka **GDAL**. 
+
+* Projekcja. Celem filtra jest identyfikacja warstw nie posiadających projekcji geodezyjnej (w jednostkach długości) tylko geograficzną (w stopniach). Służy do tego metoda `.crs()`, zwracająca obiekt `QgsCoordinateReferenceSystem`. Informację na temat kodu EPSG można pozyskać metodą `.crs().authid()`, ale lepiej stosować metodę `.crs().isGeographic()`, która zwraca *True*, jeżeli warstwa posiada projekcę geograficzną. 
+
+Poniższy kod pozwala na przegląd właściwości poszczególnych plików.
+  
+```Python
+for rast in lista:
+    raster = QgsRasterLayer(rast)
+    print(raster.dataProvider().dataType(1))
+    print(raster.crs().authid())
+    print(raster.crs().isGeographic())
+```
+
+Typem danych właściwym dla danych kategoryzowanych jest typ `Byte`. Jest on przechowywany w stałej ```Qgis.DataType.Byte```. Inne typy całkowite to Int16, Int32, UInt16, UInt32 oraz Float32 i Float64. Ponadto stosowane są typy urojone (complex), które nas nie interesują.
+
+
+### Parametry algorytmów slope i warpreproject
+Głównym algorytmem geoprzetwarzania skryptu jest `native:slope`, który posiada tylko dwa parametry: INPUT i OUTPUT. Parametr INPUT to nazwa pliku wejściowego, OUTPUT to nazwa pliku wyjściowego, tworzona na podstawie wejściowego, z dodaniem katalogu docelowego (zdefiniowanego w zmiennej *destination*) oraz przdrostka slope:
+
+```Python
+output = os.path.join(destination,"slope_"+rast)
+```
+
+Lista parametrów `gdal:warpreproject` jest dłuższa. Istotne są TARGET_RESOLUTION (rozdzielczość) oraz TARGET_CRS. pierwszy ustawimy na 30 (m) drugi na `QgsCoordinateReferenceSystem('EPSG:2180')`. Parametr RESAMPLING można pozostawić domyślny (0) lub ustawić na dowolny inny (1-11). Więcej na temat metod resamplingu. Więcej: [https://docs.qgis.org/3.28/en/docs/user_manual/processing_algs/gdal/rasterprojections.html] oraz: [https://gdal.org/programs/gdalwarp.html] w sekcji resampling_methods.
+
+Jako output użyjemy 'TEMPORARY_OUTPUT', gdyż pośredniego wyniku reprojekcji nie zamierzamy zachowywać.
+
+```Python
+slope_params = {
+    'INPUT':'',
+    'OUTPUT':''
+}
+
+repro_params = {'INPUT':'',
+    'TARGET_CRS':QgsCoordinateReferenceSystem('EPSG:2180'),
+    'RESAMPLING':1,
+    'NODATA':None,
+    'TARGET_RESOLUTION':30,
+    'OUTPUT':'TEMPORARY_OUTPUT'}
+```
+
+### Główna pętla skryptu.
+Główna pętla przechodzi przez wszystkie pliki *tif* i wykonuje następujące zadania:
+1. wczytuje je jako warstwy rastrowe
+2. sprawdza typ danych jeżeli i jeżeli nie jest to *Byte*:
+3. Dokonuje rozgałęzienia:
+4. Jeżeli projekcja jest geograficzna:
+   1. plik staje się wejściem dla parametrów reprojekcji
+   2. wykonuje reprojekcję
+   3. wynik reprojekcji jest wejściem do obliczenia nachylenia stoków
+5. Jeżeli projekcja nie jest geograficzna:
+  1. plik staje się wejściem dla parametrów rnachylenia stoków.
+6. Wyznacza scieżkę i nazwę pliku docelowego
+7. Wylicza nachylenie stoków
+   
+```Python
+for rast in lista:
+    raster = QgsRasterLayer(rast) #1
+    if raster.dataProvider().dataType(1) != Qgis.DataType.Byte: #2
+        if raster.crs().isGeographic(): #3
+            repro_params['INPUT'] = rast #4.1
+            reprojected = processing.run("gdal:warpreproject", repro_params) ['OUTPUT'] #4.2
+            slope_params['INPUT'] = reprojected #4.3
+        else:
+            slope_params['INPUT'] = rast #5.1
+        slope_params['OUTPUT'] = os.path.join(destination,"slope_"+rast) #6
+        processing.run("native:slope", slope_params) #7
+```
+
+## Ćwiczenie 2 Wyliczenie podstawowych statystyk i zapis do zewnętrznego pliku
+Zadanie wykorzystuje katalog *raster_folder* z poprzedniego ćwiczenia. W ramach zadania pomijamy zarówno plik z danymi kategoryzowanymi jak i ten z projekcją WGS84, zawierający dane typu Int16. 
+
+Podobnie jak w poprzednich zadaniach należy ustawić ścieżkę do katalogu roboczego oraz przefiltrować listę w celu pozostawienia plików z rozszerzeniem *tif*. Dodatkowo, zostanie zaimportowana biblioteka `pandas`, która ostanie użyta w celu exportu wyników do pliku *csv*
+
+```Python
+import pandas as pd
+import os
+folder= "raster_folder"
+path = os.path.join(os.path.expanduser("~"),"Documents","skrypty_geoprzetwarzania",folder)
+os.chdir(path)
+lista = os.listdir(".")
+lista = [l for l in lista if l.endswith("tif")]
+```
+
+### Wyliczenie statystyk
+Kolejnym krokiem jest zainicjowanie pustych list, do których będą dodwane statyski rastrów.
+
+```Python
+means = []
+stddevs = []
+mins = []
+maxes = []
+rasts = []
+```
+
+Statystki rastra wymagają utworzenia obiektu `QgsRasterBandStats`, który przechowuje podstawowe statstyki: mean, stddev, minimumValue, maximumValue czy range. Statystyki nie są metodami, ale atrybutami klasy, czyli do ich wywołania nie stosujemy nawiasów: ```stats.minimumValue```.
+
+Obiekt `QgsRasterBandStats` jest tworzony metodą `.dataProvider().bandStatistics(1)`, gdzie 1 to numer pasma. Numeracja pasm zaczyna się od 1. 
+
+> **UWAGA:** metoda `.bandStatistics()`, nie jest metodą klasy `QgsRasterDataProvider`, ale klasy `QgsRasterInterface` i tam jest też opisana.
+
+### Główna pętla skryptu
+Główna pętla przechodzi przez wszystkie pliki *tif* i wykonuje następujące zadania:
+
+1. wczytuje je jako warstwy rastrowe
+2. sprawdza czy projekcję plików i typ danych
+3. Tworzy obiekt `QgsRasterBandStats` ze statystykami
+4. dodaje do list odpowiednie statystyki...
+5. ...oraz nazwę pliku bez rozszerzenia i kropki
+
+```Python
+for rast in lista:
+    raster = QgsRasterLayer(rast) #1
+    if (not raster.crs().isGeographic()) and (not raster.dataProvider().dataType(1) == Qgis.DataType.Byte): #2
+        stats = raster.dataProvider().bandStatistics(1) #3
+        means.append(stats.mean) #4
+        stddevs.append(stats.stdDev)
+        mins.append(stats.minimumValue)
+        maxes.append(stats.maximumValue)
+        rasts.append(rast[:-4]) #5 usuwamy tif i kropkę, dlatego -4
+```
+
+
+Po zakończeniu pętli głównej tworzony jest słownik, gdzie kluczem jest nazwa statystyki a wartościami lista ze statystykami. Kolumna index zawiera nazwy pliku. W ostatnim krokiem słownik konwertowany jest do struktury *DataFrame* biblioteki `pandas` i eksporowany do pliku csv, w katalogu nadrzędym *".."* względem katalogu z którego wczytywane są rastry. 
+
+```Python
+stats = {'index':rasts,'means':means,'stddevs':stddevs,'mins':mins,'maxes':maxes}
+pd.DataFrame(stats).to_csv(os.path.join("..","stats.csv"))
+```

@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 folder= "raster_folder"
 path = os.path.join(os.path.expanduser("~"),"Documents","skrypty_geoprzetwarzania",folder)
 os.chdir(path)
