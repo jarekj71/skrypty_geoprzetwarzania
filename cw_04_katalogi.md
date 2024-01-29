@@ -1,7 +1,7 @@
 # Iteracyjne przetwarzanie katalogów
 
 ## Wiedza i umiejętności
-W ramach zajęć umiejętności iteracyjnego przetwarzania obiektów w warstwie zostaną rozbudowane o umiejętności przetwarzania zawartości folderów (katalogów). W ramach zajęć soztaną przedstawione metody warstw wektorowych i rastowych pozwalające na pozyskanie podstawowych informacji na temat zawartości danej warstwy. Ćwiczenie wymaga wcześniejszego zapozania się z narzędziami Pythona przeznaczonymi do obsługi scieżek, plików i katalogów (biblioteka `os`).
+W ramach zajęć umiejętności iteracyjnego przetwarzania obiektów w warstwie zostaną rozbudowane o umiejętności przetwarzania zawartości folderów (katalogów). W ramach zajęć zostaną przedstawione metody warstw wektorowych i rastowych pozwalające na pozyskanie podstawowych informacji na temat zawartości danej warstwy. Ćwiczenie wymaga wcześniejszego zapozania się z narzędziami Pythona przeznaczonymi do obsługi scieżek, plików i katalogów (biblioteka `os`).
 
 ## Zakres zajęć
 Zajęcia są podzielone na trzy osobne ćwiczenia, dotyczące plików wektorowych, rastrowych oraz zapisu informacji do plików zewnętrznych. Umiejętności obejmują:
@@ -31,9 +31,9 @@ Zbudować skrypt, który pobierze podstawowe infromacje statystyczne na temat mo
 
 ## Dane i algorytmy geoprzetwwarzania
 Katalogi z danymi do wykonania ćwiczeń znajdują się pod adresem:
-https://uam-my.sharepoint.com/:u:/r/personal/jarekj_amu_edu_pl/Documents/cwiczenia/foldery.zip?csf=1&web=1&e=ebrtYH
+https://uam-my.sharepoint.com/:u:/g/personal/jarekj_amu_edu_pl/EZq1fSAq8-1Hqwkijo8Wm6IByK7sEG6IGN-Yt7qGMv0Sqw?e=TVuvYr
 
-Do zrealizowania zadania będą potrzebne następujące narzędzia i algorytmy:
+Do zrealizowania zadań będą potrzebne następujące narzędzia i algorytmy:
 
 * biblioteka `os` do zarządzania plikami i katalogami
 * biblioteka `core` Qgis, metody klas `QgsRasterLayer`, `QgsVectorLayer` i klasy nadrządnej `QgsMapLayer`. Dodatkowo, wykorzystane zostaną wybrane metody klasy `QgsRasterDataProvider` i `QgsRasterBandStats`
