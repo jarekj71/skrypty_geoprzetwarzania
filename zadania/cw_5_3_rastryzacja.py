@@ -27,9 +27,9 @@ for vect in lista:
         # extent
         poly_area = vector.getFeature(1).geometry().area()
         bbox = vector.getFeature(1).geometry().boundingBox()
-        bbox_size = (bbox.width()+bbox.height())/4 # średnia przez 2
+        bbox_size = (bbox.width()+bbox.height())/2 # średnia przez 2
         bbox_area = bbox.area()
-        size = bbox_size * (poly_area/bbox_area)
+        size = (bbox_size/2) * (poly_area/bbox_area)
         extent = bbox.buffered(size)
     else:
         extent = vector.getFeature(1).geometry().boundingBox()

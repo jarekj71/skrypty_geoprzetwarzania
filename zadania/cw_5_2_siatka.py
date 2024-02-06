@@ -10,13 +10,13 @@ nrows=30
 points = QgsVectorLayer(point_layer)
 
 e = points.extent()
-e1 = e.buffered(100)
+e_buf = e.buffered(100)
 
-xsize = e1.width()/ncols
-ysize = e1.height()/nrows
+xsize = e_buf.width()/ncols
+ysize = e_buf.height()/nrows
 
 grid_params = {'TYPE':2,
-    'EXTENT':e1,
+    'EXTENT':e_buf,
     'HSPACING':xsize,'VSPACING':ysize,
     'CRS':points.sourceCrs(),
     'OUTPUT':'TEMPORARY_OUTPUT'}
