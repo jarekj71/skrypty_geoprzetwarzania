@@ -4,24 +4,31 @@ path = os.path.join(os.path.expanduser("~"),"Documents","skrypty_geoprzetwarzani
 punkty_adresowe = QgsVectorLayer(os.path.join(path,"punkty_adresowe.gpkg")+"|layername=punkty_adresowe","punkty","ogr")
 nadajniki = QgsVectorLayer(os.path.join(path,"punkty_adresowe.gpkg")+"|layername=nadajniki","nadajniki","ogr")
 
-total = 5000
+total = 6000
 nsteps = 100
+min_ = 0.2
+max_ = 0.6
+
+def constrains(r,total,min=0,max=1):
+    r = np.random.rand(3) * (max-min) + min
+    r *= total/r.sum()
+    return r 
+
+def penalty(r):
+    return r.std()
 
 calc_param = {'INPUT':nadajniki,
     'FIELD_NAME':'distance',
     'FIELD_TYPE':0,
-    'FORMULA':'rand(500,2000)', # prosta wartość losowa
+    'FORMULA':'', 
     'OUTPUT':'TEMPORARY_OUTPUT'}
+
+def formula(r):
+    return 'array_get(array({},{},{}),@row_number)'.format(*r)
 
 buffer_params = {'INPUT':'',
     'DISTANCE':QgsProperty.fromExpression('"distance"'),
     'DISSOLVE':True,
-    'OUTPUT':'TEMPORARY_OUTPUT'}
-
-buffer_area_params = {'INPUT':'',
-    'FIELD_NAME':'area',
-    'FIELD_TYPE':0,
-    'FORMULA':'$area',
     'OUTPUT':'TEMPORARY_OUTPUT'}
 
 select_params = {'INPUT':punkty_adresowe,
@@ -30,32 +37,25 @@ select_params = {'INPUT':punkty_adresowe,
     'METHOD':0,
     'OUTPUT':'TEMPORARY_OUTPUT'}
 
-min_cost = 100000000000 # duża liczba
+max_gain = -1 # mała liczba liczba
 best_distances = NULL
-
-
-def formula(total):
-    r = np.random.rand(3)
-    r *= total/r.sum()
-    return 'array_get(array({},{},{}),@row_number)'.format(*r)
    
+  
 for i in range(nsteps):
-    calc_param['FORMULA'] = formula(total)
+    dm = np.random.rand(3)
+    constr = constrains(dm,total,min_,max_)
+    calc_param['FORMULA'] = formula(constr)
     distances = processing.run("native:fieldcalculator",calc_param)['OUTPUT']
     buffer_params['INPUT'] = distances
     buffer = processing.run("native:buffer", buffer_params)['OUTPUT']
-    buffer_area_params['INPUT'] = buffer
-    buffer = processing.run("native:fieldcalculator",buffer_area_params)['OUTPUT']
     select_params['INTERSECT'] = buffer
     selected = processing.run("native:extractbylocation", select_params)['OUTPUT']
     count = selected.featureCount()
-    area = buffer.getFeature(1)['area']
-    cost = area/count
-    print(count,area,cost)
-    if cost < min_cost:
-        min_cost = cost
+    gain = count-penalty(constr)
+    if gain > max_gain:
+        max_gain = gain
         best_distances = distances
-        print("    {:.3f}".format(min_cost*1000))
+        print("    {:.3f}".format(max_gain))
 
 buffer_params['INPUT']=best_distances
 buffer = processing.run("native:buffer", buffer_params)['OUTPUT']

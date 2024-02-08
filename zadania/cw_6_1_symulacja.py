@@ -2,6 +2,7 @@ import os
 
 destination = os.path.join(os.path.expanduser("~"),"Documents","sym")
 point_layer = "probkowanie.gpkg"
+nsteps = 20
 
 path = os.path.join(os.path.expanduser("~"),"Documents","skrypty_geoprzetwarzania")
 os.chdir(path)
@@ -25,7 +26,7 @@ pparams = {'INPUT':points,
     'NUMBER':80,
     'OUTPUT':'TEMPORARY_OUTPUT'}
 
-for i in range(20):
+for i in range(nsteps):
     randomed = processing.run("native:randomextract", pparams)
     iparams['SHAPES'] = randomed['OUTPUT']
     iparams['TARGET_OUT_GRID'] = os.path.join(destination,'s{:03d}.sdat'.format(i)) # musi być ścieżka bezwzględna
